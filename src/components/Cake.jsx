@@ -42,7 +42,7 @@ function Candle({ position, color = '#f39c12', flameColor = '#ff5f1f' }) {
         <meshBasicMaterial color={flameColor} />
       </mesh>
 
-      {/* Soft flame light source */}
+      {/* Soft flame light source (shadows disabled to ensure smooth performance) */}
       <pointLight 
         ref={lightRef}
         position={[0, 0.6, 0]} 
@@ -50,9 +50,6 @@ function Candle({ position, color = '#f39c12', flameColor = '#ff5f1f' }) {
         intensity={1} 
         distance={2.5} 
         decay={2}
-        castShadow
-        shadow-mapSize-width={128}
-        shadow-mapSize-height={128}
       />
     </group>
   );
@@ -85,7 +82,7 @@ function Strawberry({ position, rotation = [0, 0, 0] }) {
 function Blueberry({ position }) {
   return (
     <mesh position={position} scale={0.09} castShadow>
-      <sphereGeometry args={[1, 16, 16]} />
+      <sphereGeometry args={[1, 8, 8]} />
       <meshStandardMaterial 
         color="#22316c" 
         roughness={0.4} 
@@ -235,7 +232,7 @@ export default function Cake({
       {/* Bottom tier cream dollops */}
       {creamT1.map((pos, idx) => (
         <mesh key={`cream1-${idx}`} position={pos} scale={0.14} castShadow>
-          <sphereGeometry args={[1, 12, 12]} />
+          <sphereGeometry args={[1, 8, 8]} />
           <meshStandardMaterial color={secondaryColor} roughness={0.3} />
         </mesh>
       ))}
@@ -256,7 +253,7 @@ export default function Cake({
       {/* Middle tier cream dollops */}
       {creamT2.map((pos, idx) => (
         <mesh key={`cream2-${idx}`} position={pos} scale={0.12} castShadow>
-          <sphereGeometry args={[1, 12, 12]} />
+          <sphereGeometry args={[1, 8, 8]} />
           <meshStandardMaterial color={secondaryColor} roughness={0.3} />
         </mesh>
       ))}

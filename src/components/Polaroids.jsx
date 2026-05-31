@@ -54,9 +54,10 @@ function PolaroidFrame({
   useFrame((state) => {
     if (!groupRef.current || !innerRef.current) return;
 
-    // Calculate current target position based on accumulated scroll rotation
+    // Calculate current target position based on accumulated scroll rotation and slow continuous auto-rotation loop
     const scrollAngle = scrollRotationRef ? scrollRotationRef.current : 0;
-    const currentAngle = angle + scrollAngle;
+    const autoRotation = state.clock.elapsedTime * 0.08; // slow loop rotation
+    const currentAngle = angle + scrollAngle + autoRotation;
 
     const targetX = Math.cos(currentAngle) * orbitRadius;
     const targetZ = Math.sin(currentAngle) * orbitRadius;

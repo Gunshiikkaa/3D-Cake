@@ -10,6 +10,9 @@ function CameraController({ stage }) {
   const { camera } = useThree();
   const targetPos = useRef(new THREE.Vector3(2.6, 1.2, 3.8));
   const lookAtTarget = useRef(new THREE.Vector3(1.3, 0.5, 0));
+  
+  // Stable tracking point to prevent quaternion-drift feedback loops that cause black screens
+  const currentLookAt = useRef(new THREE.Vector3(1.3, 0.5, 0));
 
   useEffect(() => {
     if (stage === 'landing') {
@@ -27,11 +30,9 @@ function CameraController({ stage }) {
     // Smoothly interpolate camera position
     camera.position.lerp(targetPos.current, 0.05);
     
-    // Smoothly interpolate camera target direction
-    const currentTarget = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
-    const cameraLook = camera.position.clone().add(currentTarget);
-    cameraLook.lerp(lookAtTarget.current, 0.05);
-    camera.lookAt(cameraLook);
+    // Smoothly interpolate camera look-at vector
+    currentLookAt.current.lerp(lookAtTarget.current, 0.05);
+    camera.lookAt(currentLookAt.current);
   });
 
   return null;

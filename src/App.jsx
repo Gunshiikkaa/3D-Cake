@@ -61,23 +61,10 @@ export default function App() {
   const [stage, setStage] = useState('landing'); // 'landing', 'transitioning', 'interactive'
   const [config, setConfig] = useState(INITIAL_CONFIG);
   
-  // Terminal log lines
-  const [consoleLogs, setConsoleLogs] = useState([]);
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [shareAlert, setShareAlert] = useState(false);
-
-  const logsToRun = [
-    { text: '[*] Initializing Birthday Cake Engine v1.1.2...', type: 'cmd' },
-    { text: '[*] Loading WebGL renderer context... done.', type: 'info' },
-    { text: '[*] Baking procedural 3D cake layers... done.', type: 'info' },
-    { text: '[*] Whipping vanilla cream frosting... done.', type: 'info' },
-    { text: '[*] Adding cherries, blueberries, and candles... done.', type: 'info' },
-    { text: '[*] Calibrating Web Audio music-box synthesizer... done.', type: 'info' },
-    { text: '[*] System status: 100% baked and ready.', type: 'success' },
-    { text: '[*] Click ENTER to ignite the celebration!', type: 'cmd' }
-  ];
 
   // Decode config from URL hash if present on load
   useEffect(() => {
@@ -111,38 +98,13 @@ export default function App() {
     }
   }, []);
 
-  // Run terminal console boot sequence
-  useEffect(() => {
-    if (stage !== 'landing') return;
 
-    let logIndex = 0;
-    setConsoleLogs([]);
-
-    const logTimer = setInterval(() => {
-      if (logIndex < logsToRun.length) {
-        setConsoleLogs(prev => [...prev, logsToRun[logIndex]]);
-        logIndex++;
-      } else {
-        clearInterval(logTimer);
-      }
-    }, 380);
-
-    return () => clearInterval(logTimer);
-  }, [stage]);
 
   // Transition from landing to celebration
   const handleEnterStage = () => {
     if (stage !== 'landing') return;
 
     setStage('transitioning');
-    
-    // Add transition terminal logs
-    setConsoleLogs(prev => [
-      ...prev,
-      { text: '[*] Triggering celebration sequence...', type: 'cmd' },
-      { text: '[*] Firing confetti cannons...', type: 'success' },
-      { text: '[*] Activating 3D photo ring...', type: 'info' }
-    ]);
 
     // Play synthesized music
     if (!isAudioMuted) {
@@ -256,21 +218,7 @@ export default function App() {
             <span className="hero-name">{config.name}</span>
           </h1>
 
-          {/* Console Boot Sequence */}
-          <div className="terminal-console">
-            <div className="terminal-header">
-              <div className="terminal-dot dot-red"></div>
-              <div className="terminal-dot dot-yellow"></div>
-              <div className="terminal-dot dot-green"></div>
-            </div>
-            <div className="terminal-body">
-              {consoleLogs.map((log, idx) => (
-                <div key={idx} className={`console-line ${log.type}`}>
-                  {log.text}
-                </div>
-              ))}
-            </div>
-          </div>
+
 
           <button className="enter-btn" onClick={handleEnterStage} disabled={stage !== 'landing'}>
             <Play size={20} fill="white" />

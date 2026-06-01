@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Volume2, VolumeX, Sliders, MessageCircle, RotateCcw, Copy, ExternalLink, Sparkles, X } from 'lucide-react';
+import { Play, Volume2, VolumeX, Sliders, MessageCircle, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import CakeContainer from './components/CakeContainer';
 import Customizer from './components/Customizer';
@@ -92,10 +92,12 @@ export default function App() {
         // Merge with initial config to ensure new fields are populated if missing
         if (parsedConfig && parsedConfig.name) {
           // Replace base64 urls with defaults if base64 got corrupted
-          const validatedPhotos = parsedConfig.photos.map((p, idx) => ({
-            ...DEFAULT_PHOTOS[idx],
-            ...p
-          }));
+          const validatedPhotos = Array.isArray(parsedConfig.photos)
+            ? parsedConfig.photos.map((p, idx) => ({
+                ...DEFAULT_PHOTOS[idx],
+                ...p
+              }))
+            : DEFAULT_PHOTOS;
           
           setConfig({
             ...INITIAL_CONFIG,
@@ -331,7 +333,10 @@ export default function App() {
         onClick={() => setSelectedPhoto(null)}
       >
         <button className="lightbox-close-btn" onClick={() => setSelectedPhoto(null)}>
-          <X size={22} />
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
         
         {selectedPhoto && (
